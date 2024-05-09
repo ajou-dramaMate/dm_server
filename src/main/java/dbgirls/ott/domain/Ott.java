@@ -6,30 +6,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "comment")
+@Table(name = "ott")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment {
+public class Ott {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    @Column(name = "ott_id")
     private Long id;
 
     @Column(nullable = false)
-    private String text;
+    private String name;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private Integer price;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "community_id", nullable = false)
-    private Community community;
+    @OneToMany(mappedBy = "ott", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final Set<OttDramaRelation> ottDramaRelations = new HashSet<>();
 }

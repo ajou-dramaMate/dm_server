@@ -1,37 +1,25 @@
 package dbgirls.ott.domain;
 
-
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Entity
-@Table(name = "review")
+@Table(name = "ott_drama_relation")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Review {
+public class OttDramaRelation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "review_id")
+    @Column(name = "ott_drama_relation_id")
     private Long id;
 
-    @Column(nullable = false)
-    private String contents;
-
-    @Column(nullable = false)
-    private Integer star;
-
-    @Column(nullable = false)
-    private LocalDate date;
-
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "ott_id", nullable = false)
+    private Ott ott;
 
     @ManyToOne
     @JoinColumn(name = "drama_id", nullable = false)
