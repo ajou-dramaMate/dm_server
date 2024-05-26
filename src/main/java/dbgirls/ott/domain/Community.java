@@ -41,8 +41,8 @@ public class Community {
     private Integer currentRecruit;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @OneToMany(mappedBy = "community", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<Comment> comments = new HashSet<>();

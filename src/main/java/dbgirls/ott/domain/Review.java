@@ -30,8 +30,8 @@ public class Review {
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "drama_id", nullable = false)
