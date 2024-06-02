@@ -26,8 +26,8 @@ public class Comment {
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private User member;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "community_id", nullable = false)
