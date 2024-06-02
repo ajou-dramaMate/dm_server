@@ -1,4 +1,4 @@
-package dbgirls.ott.dto;
+package dbgirls.ott.dto.loginDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

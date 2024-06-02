@@ -31,7 +31,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    private User member;
 
     @ManyToOne
     @JoinColumn(name = "drama_id", nullable = false)

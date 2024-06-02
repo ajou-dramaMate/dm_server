@@ -10,17 +10,21 @@ import java.util.Set;
 @Entity
 @Table(name = "member")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class User {
     @Id
     @Column(name = "member_id")
     private String id;
 
     @Column(nullable = false)
-    private String pw;
+    private String email;
 
     @Column(nullable = false)
-    private String nickname;
+    private String name;
+
+    @Column(nullable = false)
+    private String refreshToken;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<Review> reviews = new HashSet<>();
@@ -32,9 +36,10 @@ public class Member {
     private final Set<Comment> comments = new HashSet<>();
 
     @Builder
-    public Member(String id, String pw, String nickname){
+    public User(String id, String email, String name, String refreshToken){
         this.id = id;
-        this.pw = pw;
-        this.nickname = nickname;
+        this.email = email;
+        this.name = name;
+        this.refreshToken = refreshToken;
     }
 }

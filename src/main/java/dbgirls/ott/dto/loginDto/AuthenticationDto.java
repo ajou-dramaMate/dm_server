@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Arrays;
 
+// 권한 설정 진행하는 dto
 public class AuthenticationDto extends AbstractAuthenticationToken {
 
     private Object email;
@@ -28,4 +29,6 @@ public class AuthenticationDto extends AbstractAuthenticationToken {
         return token;
     }
 }
+
+
 

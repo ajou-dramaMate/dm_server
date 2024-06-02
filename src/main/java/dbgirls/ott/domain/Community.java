@@ -42,7 +42,7 @@ public class Community {
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    private User member;
 
     @OneToMany(mappedBy = "community", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<Comment> comments = new HashSet<>();

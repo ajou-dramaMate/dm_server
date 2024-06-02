@@ -1,21 +1,12 @@
 package dbgirls.ott.config;
 
-import dbgirls.ott.jwt.JwtAuthenticationFilter;
-//import dbgirls.ott.jwt.CustomAuthenticationFailureHandler;
-//import dbgirls.ott.jwt.CustomAuthenticationSuccessHandler;
-import dbgirls.ott.jwt.JwtAuthenticationProvider;
+import dbgirls.ott.jwt.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -24,39 +15,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig{
 
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-
-    private final JwtAuthenticationProvider jwtAuthenticationProvider;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtTokenFilter jwtTokenFilter;
 
     @Bean
-    protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception, NullPointerException {
-
-//        UsernamePasswordAuthenticationFilter filter = new UsernamePasswordAuthenticationFilter();
-//        filter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());
-//        filter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
-//        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager);
-
+    protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(CsrfConfigurer::disable)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/login/**").permitAll()
-                        .anyRequest().authenticated()
-                );
-
-
+                        .requestMatchers( "/api/v1/**", "/swagger-ui/**").permitAll()
+                        .anyRequest().authenticated());
 
         return http.build();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        return new ProviderManager(jwtAuthenticationProvider);
     }
 
 }
