@@ -2,10 +2,7 @@ package dbgirls.ott.domain;
 
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,10 +19,13 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
-    private String pw;
+    private String email;
 
     @Column(nullable = false)
-    private String nickname;
+    private String name;
+
+    @Column(nullable = false)
+    private String refreshToken;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<Review> reviews = new HashSet<>();
@@ -35,4 +35,12 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<Comment> comments = new HashSet<>();
+
+    @Builder
+    public User(String email, String name, String refreshToken){
+//        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.refreshToken = refreshToken;
+    }
 }
