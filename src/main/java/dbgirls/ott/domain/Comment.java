@@ -1,10 +1,7 @@
 package dbgirls.ott.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -32,4 +29,11 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "community_id", nullable = false)
     private Community community;
+
+    @Builder
+    public Comment(String text, User user, Community community) {
+        this.text = text;
+        this.user = user;
+        this.community = community;
+    }
 }
