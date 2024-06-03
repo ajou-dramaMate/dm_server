@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dbgirls.ott.domain.User;
 import dbgirls.ott.dto.UserDto;
 import dbgirls.ott.dto.loginDto.JwtDto;
+import dbgirls.ott.dto.loginDto.OAuthResponseDto;
 import dbgirls.ott.dto.loginDto.UserDataDto;
 import dbgirls.ott.jwt.JwtTokenUtil;
 import dbgirls.ott.repository.UserRepository;
@@ -11,11 +12,20 @@ import io.jsonwebtoken.impl.Base64UrlCodec;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -23,7 +33,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final String kakaoTokenUrl = "https://oauth2.googleapis.com/token";
+    private final String kakaoTokenUrl = "https://kauth.kakao.com/oauth/token";
 
     @Value("${oauth2.client.kakao.client-id}")
     private String clientId;
@@ -39,16 +49,39 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public String loadToLogin() {
+        String loginUrl = "https://kauth.kakao.com/oauth/authorize?" + "client_id=" + clientId + "&redirect_uri=" + redirectUrl
+                + "&response_type=code";
+        return loginUrl;
+    }
+
     // 서비스의 자체 회원가입,로그인을 진행하는 메서드
-    public JwtDto loginToService(String id_token, String social) {
+    public JwtDto loginToService(String accessToken) {
+        RestTemplate restTemplate = new RestTemplate();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
-        UserDto userDto = decodeToken(id_token.split("\\.")[1], social);
-        Optional<User> user = userRepository.findByEmail(userDto.getEmail());
+        params.add("code", accessToken);
+        params.add("client_id", clientId);
+        params.add("client_secret", clientSecret);
+        params.add("redirect_uri", redirectUrl);
+        params.add("grant_type", "authorization_code");
 
-        JwtDto jwtDto = JwtTokenUtil.createToken(userDto.getEmail(), secretKey);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
+        ResponseEntity<OAuthResponseDto> responseEntity = restTemplate.postForEntity(kakaoTokenUrl, requestEntity, OAuthResponseDto.class);
+        System.out.println("responseEntity : " + responseEntity.getBody().getAccess_token() + responseEntity.getBody().getId_token());
+
+        Optional<UserDataDto> userDataDto = decodeToken(responseEntity.getBody().getId_token().split("\\.")[1]);
+
+
+        Optional<User> user = userRepository.findByEmail(userDataDto.get().getEmail());
+        JwtDto jwtDto = JwtTokenUtil.createToken(userDataDto.get().getEmail(), secretKey);
+        UserDto userDto = new UserDto();
 
         if (user.isEmpty()) { // 회원가입
-            User signUpUser = userDto.toEntity(userDto.getName(),userDto.getEmail(), jwtDto.getRefreshToken());
+            User signUpUser = userDto.toEntity(userDataDto.get().getNickname(), userDataDto.get().getEmail(), jwtDto.getRefreshToken());
             userRepository.save(signUpUser);
         }
         else { // 로그인
@@ -75,9 +108,16 @@ public class UserService {
     public JwtDto loginForTestUser() {
         Optional<User> user = userRepository.findByEmail("testuser@email");
         JwtDto jwtDto = JwtTokenUtil.createToken("testuser@email", secretKey);
-        User testUser = user.get();
-        testUser.setRefreshToken(jwtDto.getRefreshToken());
-        userRepository.save(testUser);
+
+        if(user.isEmpty()) {
+            User testUser = new User("testuser@email", "testuser", jwtDto.getRefreshToken());
+            userRepository.save(testUser);
+        }
+        else {
+            User testUser = user.get();
+            testUser.setRefreshToken(jwtDto.getRefreshToken());
+            userRepository.save(testUser);
+        }
 
         return jwtDto;
     }
@@ -88,7 +128,7 @@ public class UserService {
         return email;
     }
 
-    public UserDto decodeToken(String jwtToken, String social) {
+    public Optional<UserDataDto> decodeToken(String jwtToken) {
         byte[] decode = new Base64UrlCodec().decode(jwtToken);
         String decode_data = new String(decode, StandardCharsets.UTF_8);
 
@@ -96,10 +136,7 @@ public class UserService {
 
         try {
             UserDataDto userDataDto = objectMapper.readValue(decode_data, UserDataDto.class);
-            UserDto userDto = new UserDto();
-            userDto.setEmail(userDataDto.getEmail());
-            userDto.setName(userDataDto.getNickname());
-            return userDto;
+            return Optional.ofNullable(userDataDto);
         }
         catch (com.fasterxml.jackson.core.JsonProcessingException e) {
             e.printStackTrace();
