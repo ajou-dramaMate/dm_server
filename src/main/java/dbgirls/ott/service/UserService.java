@@ -11,6 +11,8 @@ import io.jsonwebtoken.impl.Base64UrlCodec;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -78,6 +80,12 @@ public class UserService {
         userRepository.save(testUser);
 
         return jwtDto;
+    }
+
+    public String getUserEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = (String)authentication.getCredentials();
+        return email;
     }
 
     public UserDto decodeToken(String jwtToken, String social) {
