@@ -24,6 +24,7 @@ import java.util.Optional;
 public class DramaService {
     private final DramaRepository dramaRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
     public String postDramaInfo(PostDramaReq postDramaReq) {
         // 사용자 정보 조회
@@ -52,9 +53,7 @@ public class DramaService {
     }
 
     public List<LikedDramaRes> getLikedDramaList() {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = (String)authentication.getCredentials(); //email
+        String email = userService.getUserEmail();
         Optional<User> user = userRepository.findByEmail(email);
 
         List<Drama> dramas = dramaRepository.findAll();
