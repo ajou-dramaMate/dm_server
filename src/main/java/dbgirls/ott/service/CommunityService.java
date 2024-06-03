@@ -34,7 +34,7 @@ public class CommunityService {
         Community community = postCommunityReq.toEntity(postCommunityReq, user);
         community.setDate(LocalDate.now());
         communityRepository.save(community);
-        return("커뮤니티 글 등록되었습니다.");
+        return("커뮤니티 글이 등록되었습니다.");
     }
 
     public List<CommunityRes> getCommunityInfo() {

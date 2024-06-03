@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -22,9 +23,7 @@ public class CommunityDetailRes {
 
     private String contents;
 
-    private Set comments;
-
-    //review
+    private List<CommentRes> comments;
 
     public static CommunityDetailRes fromEntity(Community community) {
         return CommunityDetailRes.builder()
@@ -32,7 +31,7 @@ public class CommunityDetailRes {
                 .name(community.getUser().getName())
                 .date(community.getDate())
                 .contents(community.getContents())
-                .comments(community.getComments())
+                .comments(community.getComments().stream().map(CommentRes::fromEntity).toList())
                 .build();
     }
 }

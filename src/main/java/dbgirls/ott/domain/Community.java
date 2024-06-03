@@ -1,5 +1,6 @@
 package dbgirls.ott.domain;
 
+import dbgirls.ott.dto.communityDto.CommentRes;
 import jakarta.persistence.*;
 import lombok.*;
 

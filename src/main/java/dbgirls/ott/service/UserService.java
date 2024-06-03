@@ -75,9 +75,16 @@ public class UserService {
     public JwtDto loginForTestUser() {
         Optional<User> user = userRepository.findByEmail("testuser@email");
         JwtDto jwtDto = JwtTokenUtil.createToken("testuser@email", secretKey);
-        User testUser = user.get();
-        testUser.setRefreshToken(jwtDto.getRefreshToken());
-        userRepository.save(testUser);
+
+        if(user.isEmpty()) {
+            User testUser = new User("testuser@email", "testuser", jwtDto.getRefreshToken());
+            userRepository.save(testUser);
+        }
+        else {
+            User testUser = user.get();
+            testUser.setRefreshToken(jwtDto.getRefreshToken());
+            userRepository.save(testUser);
+        }
 
         return jwtDto;
     }
