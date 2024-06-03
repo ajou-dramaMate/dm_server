@@ -1,10 +1,7 @@
 package dbgirls.ott.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -33,12 +30,13 @@ public class Community {
     @Column(nullable = false)
     private boolean spoiler;
 
-    @Column(nullable = false)
     private boolean recruitStatus;
 
     private Integer totalRecruit;
 
     private Integer currentRecruit;
+
+    private String ott;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -46,4 +44,15 @@ public class Community {
 
     @OneToMany(mappedBy = "community", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<Comment> comments = new HashSet<>();
+
+
+    @Builder
+    public Community(String title, boolean spoiler, String ott, Integer totalRecruit, String contents, User user) {
+        this.title = title;
+        this.spoiler = spoiler;
+        this.ott = ott;
+        this.totalRecruit = totalRecruit;
+        this.contents = contents;
+        this.user = user;
+    }
 }

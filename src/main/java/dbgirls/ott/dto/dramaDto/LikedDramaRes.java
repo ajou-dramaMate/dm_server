@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LikedDramaRes {
+
     private String title;
 
 //    private byte[] image;
