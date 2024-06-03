@@ -1,6 +1,7 @@
 package dbgirls.ott.dto.communityDto;
 
 import dbgirls.ott.domain.Community;
+import dbgirls.ott.domain.OttType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class CommunityRes {
     private String name; // nickname?
     private LocalDate date;
     private boolean spoiler;
-    private String ott;
+    private OttType ott;
     private Integer totalRecruit;
     private Integer currentRecruit;
     private boolean recruitStatus;
