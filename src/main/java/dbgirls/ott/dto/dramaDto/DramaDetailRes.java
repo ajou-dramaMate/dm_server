@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -30,7 +32,7 @@ public class DramaDetailRes {
 
     private String summary;
 
-    //review
+    private List<ReviewRes> review;
 
     public static DramaDetailRes fromEntity(Drama drama) {
         return DramaDetailRes.builder()
@@ -43,7 +45,7 @@ public class DramaDetailRes {
                 .information(drama.getInformation())
 //                .image(drama.getImage())
                 .summary(drama.getSummary())
-//                .review
+                .review(drama.getReviews().stream().map(ReviewRes::fromEntity).toList())
                 .build();
     }
 }

@@ -2,10 +2,7 @@ package dbgirls.ott.domain;
 
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -36,4 +33,12 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "drama_id", nullable = false)
     private Drama drama;
+
+    @Builder
+    public Review(String contents, Integer star, User user, Drama drama) {
+        this.contents = contents;
+        this.star = star;
+        this.user = user;
+        this.drama = drama;
+    }
 }
