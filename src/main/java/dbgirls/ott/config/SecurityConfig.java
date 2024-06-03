@@ -21,7 +21,7 @@ public class SecurityConfig{
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(CsrfConfigurer::disable)
-//                .addFilterAt(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers( "/api/v1/**", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated());
