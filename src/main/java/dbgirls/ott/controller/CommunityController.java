@@ -19,6 +19,11 @@ public class CommunityController {
         return ResponseEntity.ok().body(communityService.getCommunityInfo());
     }
 
+    @GetMapping("/{community_id}")
+    public ResponseEntity<?> getDetailDrama(@PathVariable("community_id") Long communityId) {
+        return ResponseEntity.ok().body(communityService.getDetailCommunityInfo(communityId));
+    }
+
     @PostMapping("")
     public ResponseEntity<?> postCommunity(@RequestBody @Validated PostCommunityReq postCommunityReq) {
         return ResponseEntity.ok().body(communityService.postCommunityInfo(postCommunityReq));

@@ -2,6 +2,7 @@ package dbgirls.ott.service;
 
 import dbgirls.ott.domain.Community;
 import dbgirls.ott.domain.User;
+import dbgirls.ott.dto.communityDto.CommunityDetailRes;
 import dbgirls.ott.dto.communityDto.CommunityRes;
 import dbgirls.ott.dto.communityDto.PostCommunityReq;
 import dbgirls.ott.repository.CommunityRepository;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -56,6 +56,12 @@ public class CommunityService {
         }
 
         return communityResList;
+    }
+
+    public CommunityDetailRes getDetailCommunityInfo(Long communityId) {
+        Community community = communityRepository.findById(communityId).orElseThrow();
+
+        return CommunityDetailRes.fromEntity(community);
     }
 
 }
