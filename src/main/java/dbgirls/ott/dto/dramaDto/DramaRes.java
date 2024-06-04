@@ -21,7 +21,7 @@ public class DramaRes {
 
     public static DramaRes fromEntity(Drama drama) {
         return DramaRes.builder()
-                .dramaId(drama.getDramaId())
+                .dramaId(drama.getId())
                 .title(drama.getTitle())
 //                .image(drama.getImage())
                 .like(drama.isLiked())

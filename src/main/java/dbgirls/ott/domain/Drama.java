@@ -3,8 +3,6 @@ package dbgirls.ott.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +16,7 @@ public class Drama {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "drama_id")
-    private Long dramaId;
+    private Long id;
 
     @Column(nullable = false, length = 1000)
     private String title;

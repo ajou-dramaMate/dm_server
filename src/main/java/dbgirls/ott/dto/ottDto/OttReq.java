@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OttReq {
 
-    private String drama1;
+    private Long drama1;
 
-    private String drama2;
+    private Long drama2;
 
-    private String drama3;
+    private Long drama3;
 }

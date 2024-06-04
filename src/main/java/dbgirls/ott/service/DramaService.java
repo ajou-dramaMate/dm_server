@@ -2,7 +2,6 @@ package dbgirls.ott.service;
 
 import dbgirls.ott.domain.Drama;
 import dbgirls.ott.domain.LikedDrama;
-import dbgirls.ott.domain.OttDramaRelation;
 import dbgirls.ott.domain.User;
 import dbgirls.ott.dto.dramaDto.DramaDetailRes;
 import dbgirls.ott.dto.dramaDto.DramaRes;
@@ -33,7 +32,7 @@ public class DramaService {
         // 사용자 정보 조회
         Drama drama = postDramaReq.toEntity(postDramaReq);
         dramaRepository.save(drama);
-        ottDramaRelationService.addOttDramaRelation(drama.getDramaId(), postDramaReq.getOtt());
+        ottDramaRelationService.addOttDramaRelation(drama.getId(), postDramaReq.getOtt());
         return("드라마가 등록되었습니다.");
     }
 
@@ -66,7 +65,7 @@ public class DramaService {
 
         for (LikedDrama likedDrama : likedDramas) {
             if (likedDrama.getDrama().isLiked()) {
-                likedDramaList.add(LikedDramaRes.fromEntity(likedDrama.getDrama().getTitle()));
+                likedDramaList.add(LikedDramaRes.fromEntity(likedDrama.getDrama().getId(), likedDrama.getDrama().getTitle()));
             }
         }
 
