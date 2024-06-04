@@ -16,13 +16,13 @@ public class LikedDramaRes {
 
     private String title;
 
-//    private byte[] image;
+    private byte[] image;
 
-    public static LikedDramaRes fromEntity(Long dramaId, String title) {
+    public static LikedDramaRes fromEntity(Long dramaId, String title, byte[] image) {
         return LikedDramaRes.builder()
                 .dramaId(dramaId)
                 .title(title)
-//                .image(drama.getImage())
+                .image(image)
                 .build();
     }
 }

@@ -42,9 +42,9 @@ public class Drama {
     @Column(nullable = false)
     private boolean liked;
 
-//    @Lob
-//    @Column(nullable = false, length = 1000)
-//    private byte[] image;
+    @Lob
+    @Column(nullable = false, length = 100000)
+    private byte[] image;
 
     @OneToMany(mappedBy = "drama", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<OttDramaRelation> ottDramaRelations = new HashSet<>();
@@ -56,7 +56,7 @@ public class Drama {
     private final Set<Review> reviews = new HashSet<>();
 
     @Builder
-    public Drama(String title, String member, String summary, Integer year, Integer age, String information, List<Genre> genre) {
+    public Drama(String title, String member, String summary, Integer year, Integer age, String information, List<Genre> genre, byte[] image) {
         this.title = title;
         this.member = member;
         this.summary = summary;
@@ -64,6 +64,6 @@ public class Drama {
         this.age = age;
         this.information = information;
         this.genre = genre;
-//        this.image = image;
+        this.image = image;
     }
 }

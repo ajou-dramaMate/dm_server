@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OttRes {
-//    private byte[] ott_image;
+    private byte[] ott_image;
 
     private Integer price;
 
@@ -19,7 +19,7 @@ public class OttRes {
 
     public static OttRes fromEntity(Ott ott, List<String> dramas) {
         return OttRes.builder()
-//                .ott_image(ott.getOtt_image())
+                .ott_image(ott.getOtt_image())
                 .price(ott.getPrice())
                 .dramas(dramas)
                 .build();

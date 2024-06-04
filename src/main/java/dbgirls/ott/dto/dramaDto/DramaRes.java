@@ -23,7 +23,7 @@ public class DramaRes {
         return DramaRes.builder()
                 .dramaId(drama.getId())
                 .title(drama.getTitle())
-//                .image(drama.getImage())
+                .image(drama.getImage())
                 .like(drama.isLiked())
                 .build();
     }

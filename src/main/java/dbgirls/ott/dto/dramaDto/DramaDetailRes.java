@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class DramaDetailRes {
 
     private String information;
 
-    //    private byte[] image;
+    private byte[] image;
 
     private String summary;
 
@@ -43,7 +44,7 @@ public class DramaDetailRes {
                 .age(drama.getAge())
                 .genre(drama.getGenre())
                 .information(drama.getInformation())
-//                .image(drama.getImage())
+                .image(drama.getImage())
                 .summary(drama.getSummary())
                 .review(drama.getReviews().stream().map(ReviewRes::fromEntity).toList())
                 .build();

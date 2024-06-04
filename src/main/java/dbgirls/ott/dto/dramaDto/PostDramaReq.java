@@ -30,7 +30,8 @@ public class PostDramaReq {
 
     private List<Genre> genre;
 
-//    private byte[] image;
+    private String image;
+
     private List<OttType> ott;
 
     public Drama toEntity(PostDramaReq postDramaReq) {
@@ -42,7 +43,6 @@ public class PostDramaReq {
                 .age(postDramaReq.age)
                 .information(postDramaReq.information)
                 .genre(postDramaReq.genre)
-//                .image(postDramaReq.image)
                 .build();
     }
 

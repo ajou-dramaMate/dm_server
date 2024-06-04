@@ -12,14 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostOttReq {
-//    private byte[] ott_image;
+    private String ott_image;
 
     private OttType name;
 
     private Integer price;
     public Ott toEntity(PostOttReq postOttReq) {
         return Ott.builder()
-//                .ott_image(postOttwReq.ott_image)
                 .name(postOttReq.name)
                 .price(postOttReq.price)
                 .build();

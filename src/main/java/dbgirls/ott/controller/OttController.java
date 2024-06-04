@@ -14,9 +14,11 @@ public class OttController {
 
     private final OttService ottService;
 
-    @GetMapping("")
-    public ResponseEntity<?> getDrama(@RequestBody @Validated OttReq ottReq) {
-        return ResponseEntity.ok().body(ottService.getOttRecommendResult(ottReq));
+    @GetMapping("/{drama1}/{drama2}/{drama3}")
+    public ResponseEntity<?> getDrama(@PathVariable("drama1") Long dramaId1,
+                                      @PathVariable("drama2") Long dramaId2,
+                                      @PathVariable("drama3") Long dramaId3) {
+        return ResponseEntity.ok().body(ottService.getOttRecommendResult(dramaId1, dramaId2, dramaId3));
     }
 
     @PostMapping("")

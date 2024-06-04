@@ -23,15 +23,17 @@ public class Ott {
     @Column(nullable = false)
     private Integer price;
 
-//    @Column(nullable = false)
-//    private byte[] ott_image;
+    @Lob
+    @Column(nullable = false, length = 100000)
+    private byte[] ott_image;
 
     @OneToMany(mappedBy = "ott", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<OttDramaRelation> ottDramaRelations = new HashSet<>();
 
     @Builder
-    public Ott(OttType name, Integer price) {
+    public Ott(OttType name, Integer price, byte[] ott_image) {
         this.name = name;
         this.price = price;
+        this.ott_image = ott_image;
     }
 }
