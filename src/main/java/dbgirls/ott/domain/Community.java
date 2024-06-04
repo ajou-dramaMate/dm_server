@@ -37,7 +37,7 @@ public class Community {
 
     private Integer currentRecruit;
 
-    private String ott;
+    private OttType ott;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -48,7 +48,7 @@ public class Community {
 
 
     @Builder
-    public Community(String title, boolean spoiler, String ott, Integer totalRecruit, String contents, User user) {
+    public Community(String title, boolean spoiler, OttType ott, Integer totalRecruit, String contents, User user) {
         this.title = title;
         this.spoiler = spoiler;
         this.ott = ott;

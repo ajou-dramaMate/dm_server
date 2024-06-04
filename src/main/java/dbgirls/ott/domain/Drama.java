@@ -6,6 +6,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -38,7 +39,7 @@ public class Drama {
     private String information;
 
     @Column(nullable = false)
-    private Genre genre;
+    private List<Genre> genre;
 
     @Column(nullable = false)
     private boolean liked;
@@ -54,7 +55,7 @@ public class Drama {
     private final Set<Review> reviews = new HashSet<>();
 
     @Builder
-    public Drama(String title, String member, String summary, Integer year, Integer age, String information, Genre genre) {
+    public Drama(String title, String member, String summary, Integer year, Integer age, String information, List<Genre> genre) {
         this.title = title;
         this.member = member;
         this.summary = summary;

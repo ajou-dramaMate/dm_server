@@ -24,7 +24,7 @@ public class DramaDetailRes {
 
     private Integer age;
 
-    private Genre genre;
+    private List<Genre> genre;
 
     private String information;
 

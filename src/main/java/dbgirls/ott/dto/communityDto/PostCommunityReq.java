@@ -1,6 +1,7 @@
 package dbgirls.ott.dto.communityDto;
 
 import dbgirls.ott.domain.Community;
+import dbgirls.ott.domain.OttType;
 import dbgirls.ott.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ public class PostCommunityReq {
 
     private boolean spoiler;
 
-    private String ott;
+    private OttType ott;
 
     private Integer totalRecruit;
 

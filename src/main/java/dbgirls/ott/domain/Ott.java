@@ -1,10 +1,7 @@
 package dbgirls.ott.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,11 +18,20 @@ public class Ott {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private OttType name;
 
     @Column(nullable = false)
     private Integer price;
 
+//    @Column(nullable = false)
+//    private byte[] ott_image;
+
     @OneToMany(mappedBy = "ott", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<OttDramaRelation> ottDramaRelations = new HashSet<>();
+
+    @Builder
+    public Ott(OttType name, Integer price) {
+        this.name = name;
+        this.price = price;
+    }
 }

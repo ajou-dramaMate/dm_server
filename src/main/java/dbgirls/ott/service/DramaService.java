@@ -10,8 +10,6 @@ import dbgirls.ott.repository.DramaRepository;
 import dbgirls.ott.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,11 +23,13 @@ public class DramaService {
     private final DramaRepository dramaRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final OttDramaRelationService ottDramaRelationService;
 
     public String postDramaInfo(PostDramaReq postDramaReq) {
         // 사용자 정보 조회
         Drama drama = postDramaReq.toEntity(postDramaReq);
         dramaRepository.save(drama);
+        ottDramaRelationService.addOttDramaRelation(drama.getDramaId(), postDramaReq.getOtt());
         return("드라마가 등록되었습니다.");
     }
 
