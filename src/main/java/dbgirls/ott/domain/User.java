@@ -36,6 +36,9 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<Comment> comments = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final Set<LikedDrama> likedDramas = new HashSet<>();
+
     @Builder
     public User(String email, String name, String refreshToken){
 //        this.id = id;
