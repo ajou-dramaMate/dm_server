@@ -24,7 +24,7 @@ public class Ott {
     private Integer price;
 
 //    @Column(nullable = false)
-//    private Integer ott_image;
+//    private byte[] ott_image;
 
     @OneToMany(mappedBy = "ott", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<OttDramaRelation> ottDramaRelations = new HashSet<>();

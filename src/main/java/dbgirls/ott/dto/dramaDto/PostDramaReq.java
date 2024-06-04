@@ -2,8 +2,13 @@ package dbgirls.ott.dto.dramaDto;
 
 import dbgirls.ott.domain.Drama;
 import dbgirls.ott.domain.Genre;
+import dbgirls.ott.domain.OttType;
 import dbgirls.ott.domain.User;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Getter
 @Builder
@@ -23,9 +28,10 @@ public class PostDramaReq {
 
     private String information;
 
-    private Genre genre;
+    private List<Genre> genre;
 
 //    private byte[] image;
+    private List<OttType> ott;
 
     public Drama toEntity(PostDramaReq postDramaReq) {
         return Drama.builder()

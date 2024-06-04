@@ -1,10 +1,7 @@
 package dbgirls.ott.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "ott_drama_relation")
@@ -24,4 +21,10 @@ public class OttDramaRelation {
     @ManyToOne
     @JoinColumn(name = "drama_id", nullable = false)
     private Drama drama;
+
+    @Builder
+    public OttDramaRelation(Ott ott, Drama drama) {
+        this.ott = ott;
+        this.drama = drama;
+    }
 }

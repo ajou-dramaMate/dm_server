@@ -1,7 +1,6 @@
 package dbgirls.ott.controller;
 
-import dbgirls.ott.dto.dramaDto.PostDramaReq;
-import dbgirls.ott.dto.ottDto.PostOttReq;
+import dbgirls.ott.dto.ottDto.OttReq;
 import dbgirls.ott.service.OttService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +13,11 @@ import org.springframework.web.bind.annotation.*;
 public class OttController {
 
     private final OttService ottService;
-//    @GetMapping("/{drama_id1}/{drama_id2}/{drama_id3}")
-//    public ResponseEntity<?> getDetailDrama(@PathVariable("drama_id1") Long dramaId1, ) {
-//        return ResponseEntity.ok().body(dramaService.getDetailDramaInfo(dramaId));
-//    }
+
+    @GetMapping("")
+    public ResponseEntity<?> getDrama(@RequestBody @Validated OttReq ottReq) {
+        return ResponseEntity.ok().body(ottService.getOttRecommendResult(ottReq));
+    }
 
     @PostMapping("")
     public ResponseEntity<?> postDrama() {
