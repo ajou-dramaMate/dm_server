@@ -17,7 +17,7 @@ public class Review {
     @Column(name = "review_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String contents;
 
     @Column(nullable = false)

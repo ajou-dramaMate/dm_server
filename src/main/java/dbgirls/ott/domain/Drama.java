@@ -20,13 +20,13 @@ public class Drama {
     @Column(name = "drama_id")
     private Long dramaId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String member;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String summary;
 
     @Column(nullable = false)
@@ -35,7 +35,7 @@ public class Drama {
     @Column(nullable = false)
     private Integer age;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String information;
 
     @Column(nullable = false)
