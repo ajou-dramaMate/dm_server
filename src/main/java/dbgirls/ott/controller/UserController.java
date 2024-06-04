@@ -19,18 +19,22 @@ public class UserController {
 
     @GetMapping("/oauth2/code/kakao")
     public ResponseEntity<JwtDto> getAccessCode (@RequestParam("code") String accessCode) {
-        System.out.println("access code " + accessCode);
         return ResponseEntity.ok().body(userService.loginToService(accessCode));
+    }
+
+    @GetMapping("/refresh")
+    public ResponseEntity<?> getRefreshToken() {
+        return ResponseEntity.ok().body(userService.issueRefreshToken());
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<?> getUser() {
+        return ResponseEntity.ok().body(userService.getUserInfo());
     }
 
     @GetMapping("/test-login")
     public JwtDto loginServiceForTestUser() {
     return userService.loginForTestUser();
 }
-
-//    @GetMapping("")
-//    public String testapi() {
-//        return "successful code";
-//    }
 
 }

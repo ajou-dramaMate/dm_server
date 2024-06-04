@@ -6,6 +6,7 @@ import dbgirls.ott.dto.UserDto;
 import dbgirls.ott.dto.loginDto.JwtDto;
 import dbgirls.ott.dto.loginDto.OAuthResponseDto;
 import dbgirls.ott.dto.loginDto.UserDataDto;
+import dbgirls.ott.dto.loginDto.UserRes;
 import dbgirls.ott.jwt.JwtTokenUtil;
 import dbgirls.ott.repository.UserRepository;
 import io.jsonwebtoken.impl.Base64UrlCodec;
@@ -71,10 +72,8 @@ public class UserService {
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
         ResponseEntity<OAuthResponseDto> responseEntity = restTemplate.postForEntity(kakaoTokenUrl, requestEntity, OAuthResponseDto.class);
-        System.out.println("responseEntity : " + responseEntity.getBody().getAccess_token() + responseEntity.getBody().getId_token());
 
         Optional<UserDataDto> userDataDto = decodeToken(responseEntity.getBody().getId_token().split("\\.")[1]);
-
 
         Optional<User> user = userRepository.findByEmail(userDataDto.get().getEmail());
         JwtDto jwtDto = JwtTokenUtil.createToken(userDataDto.get().getEmail(), secretKey);
@@ -93,8 +92,8 @@ public class UserService {
         return jwtDto;
     }
 
-    public JwtDto issueRefreshToken(String refreshToken) {
-        String email = JwtTokenUtil.getUserEmail(refreshToken, secretKey);
+    public JwtDto issueRefreshToken() {
+        String email = getUserEmail();
         Optional<User> user = userRepository.findByEmail(email);
         User refreshedUser = user.get();
 
@@ -120,6 +119,12 @@ public class UserService {
         }
 
         return jwtDto;
+    }
+
+    public UserRes getUserInfo() {
+        String email = getUserEmail();
+        User user = userRepository.findByEmail(email).orElseThrow();
+        return UserRes.fromEntity(user);
     }
 
     public String getUserEmail() {

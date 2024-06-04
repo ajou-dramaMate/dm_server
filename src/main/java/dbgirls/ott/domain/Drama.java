@@ -52,6 +52,9 @@ public class Drama {
     private final Set<OttDramaRelation> ottDramaRelations = new HashSet<>();
 
     @OneToMany(mappedBy = "drama", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final Set<LikedDrama> likedDramas = new HashSet<>();
+
+    @OneToMany(mappedBy = "drama", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<Review> reviews = new HashSet<>();
 
     @Builder

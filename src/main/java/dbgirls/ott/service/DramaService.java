@@ -1,12 +1,15 @@
 package dbgirls.ott.service;
 
 import dbgirls.ott.domain.Drama;
+import dbgirls.ott.domain.LikedDrama;
+import dbgirls.ott.domain.OttDramaRelation;
 import dbgirls.ott.domain.User;
 import dbgirls.ott.dto.dramaDto.DramaDetailRes;
 import dbgirls.ott.dto.dramaDto.DramaRes;
 import dbgirls.ott.dto.dramaDto.LikedDramaRes;
 import dbgirls.ott.dto.dramaDto.PostDramaReq;
 import dbgirls.ott.repository.DramaRepository;
+import dbgirls.ott.repository.LikedDramaRepository;
 import dbgirls.ott.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,7 @@ public class DramaService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final OttDramaRelationService ottDramaRelationService;
+    private final LikedDramaRepository likedDramaRepository;
 
     public String postDramaInfo(PostDramaReq postDramaReq) {
         // 사용자 정보 조회
@@ -54,14 +58,15 @@ public class DramaService {
 
     public List<LikedDramaRes> getLikedDramaList() {
         String email = userService.getUserEmail();
-        Optional<User> user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email).orElseThrow();
 
-        List<Drama> dramas = dramaRepository.findAll();
+        List<LikedDrama> likedDramas = likedDramaRepository.findByUserId(user.getId());
+
         List<LikedDramaRes> likedDramaList = new ArrayList<>();
 
-        for (Drama drama : dramas) {
-            if (drama.isLiked()) {
-                likedDramaList.add(LikedDramaRes.fromEntity(drama.getTitle()));
+        for (LikedDrama likedDrama : likedDramas) {
+            if (likedDrama.getDrama().isLiked()) {
+                likedDramaList.add(LikedDramaRes.fromEntity(likedDrama.getDrama().getTitle()));
             }
         }
 
@@ -69,9 +74,14 @@ public class DramaService {
     }
 
     public String postLikedDrama(Long dramaId) {
-        Optional<Drama> drama = dramaRepository.findById(dramaId);
-        Drama drama1 = drama.get();
-        drama1.setLiked(true);
+        Drama drama = dramaRepository.findById(dramaId).orElseThrow();
+
+        String email = userService.getUserEmail();
+        User user = userRepository.findByEmail(email).orElseThrow();
+
+        likedDramaRepository.save(LikedDrama.builder().user(user).drama(drama).build());
+
+        drama.setLiked(true);
         return "찜목록에 추가되었습니다";
     }
 }
