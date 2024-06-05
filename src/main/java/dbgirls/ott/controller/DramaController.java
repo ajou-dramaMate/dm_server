@@ -1,8 +1,12 @@
 package dbgirls.ott.controller;
 
+import dbgirls.ott.dto.dramaDto.DramaDetailRes;
+import dbgirls.ott.dto.dramaDto.DramaRes;
 import dbgirls.ott.dto.dramaDto.PostDramaReq;
 import dbgirls.ott.service.DramaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +18,9 @@ public class DramaController {
     private final DramaService dramaService;
 
     @GetMapping("")
-    public ResponseEntity<?> getDrama() {
-        return ResponseEntity.ok().body(dramaService.getDramaInfo());
+    public ResponseEntity<?> getDrama(@RequestParam(required = false, defaultValue = "0", value = "page") int page) {
+        Slice<DramaRes> dramaResSlice = dramaService.getDramaInfo(page);
+        return new ResponseEntity<>(dramaResSlice, HttpStatus.OK);
     }
 
     @GetMapping("/{drama_id}")

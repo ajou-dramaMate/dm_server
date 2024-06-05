@@ -12,15 +12,17 @@ import dbgirls.ott.repository.LikedDramaRepository;
 import dbgirls.ott.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -62,23 +64,17 @@ public class DramaService {
         }
     }
 
-    public List<DramaRes> getDramaInfo() {
-        List<Drama> dramas = dramaRepository.findAll();
-        List<DramaRes> dramaResList = new ArrayList<>();
+    public Slice<DramaRes> getDramaInfo(int page) {
+        Pageable pageable = PageRequest.of(page, 9, Sort.by("id").descending());
+        Slice<Drama> dramaSlice = dramaRepository.findAll(pageable);
 
-        for (Drama drama : dramas){
-            DramaRes addDrama = DramaRes.fromEntity(drama);
-            dramaResList.add(addDrama);
-        }
-
-        return dramaResList;
+        return dramaSlice.map(DramaRes::fromEntity);
     }
 
     public DramaDetailRes getDetailDramaInfo(Long dramaId) {
-        Optional<Drama> drama = dramaRepository.findById(dramaId);
-        Drama dramaDetail = drama.get();
+        Drama drama = dramaRepository.findById(dramaId).orElseThrow();
 
-        return DramaDetailRes.fromEntity(dramaDetail);
+        return DramaDetailRes.fromEntity(drama);
     }
 
     public List<LikedDramaRes> getLikedDramaList() {
