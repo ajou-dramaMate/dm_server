@@ -12,10 +12,7 @@ import dbgirls.ott.repository.LikedDramaRepository;
 import dbgirls.ott.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -77,11 +74,12 @@ public class DramaService {
         return DramaDetailRes.fromEntity(drama);
     }
 
-    public List<LikedDramaRes> getLikedDramaList() {
+    public List<LikedDramaRes> getLikedDramaList(int page) {
         String email = userService.getUserEmail();
         User user = userRepository.findByEmail(email).orElseThrow();
 
-        List<LikedDrama> likedDramas = likedDramaRepository.findByUserId(user.getId());
+        Pageable pageable = PageRequest.of(page, 9, Sort.by("id").descending());
+        Slice<LikedDrama> likedDramas = likedDramaRepository.findByUserId(pageable, user.getId());
 
         List<LikedDramaRes> likedDramaList = new ArrayList<>();
 

@@ -24,6 +24,16 @@ public class OttService {
     private final OttRepository ottRepository;
     private final DramaRepository dramaRepository;
 
+    public List<OttRes> getOtts(){
+        List<OttRes> ottResList = new ArrayList<>();
+
+        List<Ott> ottList = ottRepository.findAll();
+        for(Ott ott : ottList) {
+            ottResList.add(OttRes.fromEntityOtt(ott));
+        }
+        return ottResList;
+    }
+
     public String postOttInfo() {
 
         Ott coupangplay = new Ott(OttType.COUPANGPLAY, 7890, changeToImage("COUPANGPLAY.png"));

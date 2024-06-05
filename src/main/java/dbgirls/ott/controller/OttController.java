@@ -25,4 +25,9 @@ public class OttController {
     public ResponseEntity<?> postDrama() {
         return ResponseEntity.ok().body(ottService.postOttInfo());
     }
+
+    @GetMapping("")
+    public ResponseEntity<?> getDramas() {
+        return ResponseEntity.ok().body(ottService.getOtts());
+    }
 }

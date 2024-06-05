@@ -14,6 +14,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentRes {
+    private Long id;
+
     private String text;
 
     private String name;
@@ -22,6 +24,7 @@ public class CommentRes {
 
     public static CommentRes fromEntity(Comment comment) {
         return CommentRes.builder()
+                .id(comment.getId())
                 .text(comment.getText())
                 .name(comment.getUser().getName())
                 .date(comment.getDate())

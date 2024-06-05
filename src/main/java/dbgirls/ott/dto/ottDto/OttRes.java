@@ -24,4 +24,11 @@ public class OttRes {
                 .dramas(dramas)
                 .build();
     }
+
+    public static OttRes fromEntityOtt(Ott ott) {
+        return OttRes.builder()
+                .ott_image(ott.getOtt_image())
+                .price(ott.getPrice())
+                .build();
+    }
 }
