@@ -32,6 +32,9 @@ public class CommunityService {
 
         // 사용자 정보 조회
         Community community = postCommunityReq.toEntity(postCommunityReq, user);
+        if (community.getOtt() != null) {
+            community.setCurrentRecruit(2);
+        }
         community.setDate(LocalDate.now());
         communityRepository.save(community);
         return("커뮤니티 글이 등록되었습니다.");
