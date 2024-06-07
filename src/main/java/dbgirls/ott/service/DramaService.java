@@ -30,6 +30,7 @@ public class DramaService {
     private final UserService userService;
     private final OttDramaRelationService ottDramaRelationService;
     private final LikedDramaRepository likedDramaRepository;
+    private final ReviewService reviewService;
 
     public String postDramaInfo(PostDramaReq postDramaReq) {
         // 이미지 변환
@@ -70,8 +71,9 @@ public class DramaService {
 
     public DramaDetailRes getDetailDramaInfo(Long dramaId) {
         Drama drama = dramaRepository.findById(dramaId).orElseThrow();
+        Integer star = reviewService.getStarAverage(dramaId);
 
-        return DramaDetailRes.fromEntity(drama);
+        return DramaDetailRes.fromEntity(drama, star);
     }
 
     public List<LikedDramaRes> getLikedDramaList(int page) {

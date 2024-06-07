@@ -35,10 +35,10 @@ public class DramaDetailRes {
 
     private List<ReviewRes> review;
 
-    public static DramaDetailRes fromEntity(Drama drama) {
+    public static DramaDetailRes fromEntity(Drama drama, Integer star) {
         return DramaDetailRes.builder()
                 .title(drama.getTitle())
-                .star(5)
+                .star(star)
                 .member(drama.getMember())
                 .year(drama.getYear())
                 .age(drama.getAge())

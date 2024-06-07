@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @Transactional
@@ -30,5 +31,21 @@ public class ReviewService {
         review.setDate(LocalDate.now());
         reviewRepository.save(review);
         return("드라마 리뷰가 등록되었습니다.");
+    }
+
+    public Integer getStarAverage(Long dramaId) {
+        List<Review> reviewList = reviewRepository.findByDramaId(dramaId);
+        Long counts = reviewList.stream().count();
+        Integer star = 0;
+
+        for(Review review : reviewList) {
+            star += review.getStar();
+        }
+
+        if (star != 0) {
+            star /= counts.intValue();
+        }
+
+        return star;
     }
 }
