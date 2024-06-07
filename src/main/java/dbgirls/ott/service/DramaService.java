@@ -100,8 +100,17 @@ public class DramaService {
         String email = userService.getUserEmail();
         User user = userRepository.findByEmail(email).orElseThrow();
 
-        likedDramaRepository.save(LikedDrama.builder().user(user).drama(drama).build());
+        List<LikedDrama> likedDramaList = likedDramaRepository.findById();
 
+        for(LikedDrama likedDrama : likedDramaList) {
+            if (likedDrama.getDrama().getId().equals(dramaId) && likedDrama.getUser().getId().equals(user.getId())){
+                likedDramaRepository.deleteById(likedDrama.getId());
+                likedDrama.getDrama().setLiked(false);
+                return "찜목록에서 삭제되었습니다.";
+            }
+        }
+
+        likedDramaRepository.save(LikedDrama.builder().user(user).drama(drama).build());
         drama.setLiked(true);
         return "찜목록에 추가되었습니다";
     }
